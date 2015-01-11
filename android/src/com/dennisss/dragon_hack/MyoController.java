@@ -1,4 +1,4 @@
-package com.example.hacker.test;
+package com.dennisss.dragon_hack;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,19 +15,6 @@ import com.thalmic.myo.scanner.ScanActivity;
 
 /**
  * Created by hacker on 1/10/15.
- */
-
-/*
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        Hub hub = Hub.getInstance();
-        if (!hub.init(this)) {
-            Log.e("", "Could not initialize the Hub.");
-            finish();
-            return;
-        }
-        MyoController controller = new MyoController(getApplicationContext());
-        controller.init();
-        controller.getAngle();
  */
 
 
@@ -104,9 +91,9 @@ public class MyoController {
     public void init()
     {
 
-        //Hub.getInstance().attachToAdjacentMyo();
-        Intent intent = new Intent(mContext, ScanActivity.class);
-        mContext.startActivity(intent);
+        Hub.getInstance().attachToAdjacentMyo();
+        //Intent intent = new Intent(mContext, ScanActivity.class);
+        //mContext.startActivity(intent);
         Hub.getInstance().addListener(mListener);
         Hub.getInstance().setSendUsageData(false);
     }

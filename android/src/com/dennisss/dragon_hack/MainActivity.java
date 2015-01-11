@@ -14,6 +14,8 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 
+import com.thalmic.myo.Hub;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +30,7 @@ public class MainActivity extends Activity implements CvCameraViewListener2 {
 	private ColorDetector detector;
 	private Sensors sensors;
 	private Socket io;
+	private MyoController myo;
 
 	private int screen_width;
 	private int screen_height;
@@ -68,6 +71,17 @@ public class MainActivity extends Activity implements CvCameraViewListener2 {
 		
         sensors = new Sensors(this);
         io = new Socket();
+        
+        
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        Hub hub = Hub.getInstance();
+        if (!hub.init(this)) {
+            Log.e("", "Could not initialize the Hub.");
+            finish();
+            return;
+        }
+        myo = new MyoController(getApplicationContext());
+        myo.init();
 	}
 
 	
@@ -102,7 +116,7 @@ public class MainActivity extends Activity implements CvCameraViewListener2 {
 			
 			n++;
 	    	if(n % 10 == 0){
-	    		io.send(sensors.getAngle(), 0, dx, dy);
+	    		io.send(sensors.getAngle(), myo.getAngle(), dx, dy);
 	    	}
 		
 		}
