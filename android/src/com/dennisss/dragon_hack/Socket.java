@@ -4,21 +4,24 @@ import java.net.MalformedURLException;
 
 import org.json.*;
 
+import android.util.Log;
 import io.socket.*;
 
 public class Socket {
 
 	public SocketIO socket;
 
+	private static String TAG = "dragon-hack";
+	
 	public Socket(){
 		try {
-			socket = new SocketIO("http://127.0.0.1:3001/");
+			socket = new SocketIO("http://192.168.16.29:3000/");
 
 			socket.connect(new IOCallback() {
 				@Override
 				public void onMessage(JSONObject json, IOAcknowledge ack) {
 					try {
-						System.out.println("Server said:" + json.toString(2));
+						Log.i(TAG, "Server said:" + json.toString(2));
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
@@ -31,18 +34,18 @@ public class Socket {
 
 				@Override
 				public void onError(SocketIOException socketIOException) {
-					System.out.println("an Error occured");
+					Log.i(TAG, "an Error occured");
 					socketIOException.printStackTrace();
 				}
 
 				@Override
 				public void onDisconnect() {
-					System.out.println("Connection terminated.");
+					Log.i(TAG, "Connection terminated.");
 				}
 
 				@Override
 				public void onConnect() {
-					System.out.println("Connection established");
+					Log.i(TAG, "Connection established");
 				}
 
 				@Override
@@ -60,10 +63,11 @@ public class Socket {
 
 	public void send(float angle, float throttle, float dx, float dy){
 		
+		Log.i("dragon-hack", "Send");
+		
 		JSONObject obj = new JSONObject();
 		
 		try {
-			
 			obj.put("orient", angle);
 			obj.put("throt", throttle);
 			obj.put("dx", dx);
@@ -73,10 +77,6 @@ public class Socket {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		//json.add("key", new JsonPrimitive("value"));
-		//json.add("key2", new JsonPrimitive("another value"));
-		//socket.send(json);
 
 		// Emits an event to the server.
 		socket.emit("update", obj);
