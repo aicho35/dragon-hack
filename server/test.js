@@ -17,13 +17,16 @@ var mission  = autonomy.createMission();
 
 mission.takeoff()
        .zero()       // Sets the current state as the reference
-       .altitude(1)  // Climb to altitude = 1 meter
+       .altitude(0.5)  // Climb to altitude = 1 meter
 //       .forward(2)   
-//       .right(2)     
+//       .right(0.5)
+//		.wait(1000)     
 //       .backward(2) 
 //       .left(2)
        .hover(5000)  // Hover in place for 1 second
        .land();
+
+mission.client().disableEmergency();
 
 mission.run(function (err, result) {
     if (err) {

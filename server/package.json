@@ -1,7 +1,10 @@
 {
-
+	"name": "dragon-hack",
+	"private": true,
 	"dependencies": {
-		"socket.io": "0.9.16"	
+		"ar-drone": "latest",
+		"ardrone-autonomy": "latest",
+		"socket.io": "0.9.16"
 	}
 
 }
