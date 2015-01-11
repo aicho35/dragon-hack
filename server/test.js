@@ -15,18 +15,32 @@ client.after(5000, function(){
 var autonomy = require('ardrone-autonomy');
 var mission  = autonomy.createMission();
 
+
 mission.takeoff()
        .zero()       // Sets the current state as the reference
        .altitude(0.5)  // Climb to altitude = 1 meter
-//       .forward(2)   
-//       .right(0.5)
-//		.wait(1000)     
-//       .backward(2) 
+//       .forward(2)
+       .right(0.4)
+		.wait(1000)
+//       .backward(2)
 //       .left(2)
        .hover(5000)  // Hover in place for 1 second
        .land();
 
-mission.client().disableEmergency();
+//mission.client().disableEmergency();
+
+
+process.on('SIGINT', function(){
+	mission.client().stop();
+	mission.client().land(function(){
+	});
+
+
+	setTimeout(function(){
+		process.exit();
+	}, 6000);
+
+});
 
 mission.run(function (err, result) {
     if (err) {
@@ -38,3 +52,6 @@ mission.run(function (err, result) {
         process.exit(0);
     }
 });
+
+
+

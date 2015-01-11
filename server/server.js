@@ -7,8 +7,15 @@ var mission = autonomy.createMission(),
 
 io.on('connection', function (socket) {
 
+	console.log('connect');
+
+	socket.on('', function(){
+		console.log()
+	});
+
 	socket.on('takeoff', function () {
-		client.disableEmergency()
+		console.log('takeoff')
+		//client.disableEmergency()
 		control.zero();
 		client.takeoff(function(){
 			control.altitude(0.5);
@@ -25,31 +32,25 @@ io.on('connection', function (socket) {
 		var s = {x: cur.x, y: cur.y, z: cur.z, yaw: cur.yaw};
 
 		if(data.dx > 0){ // Go camera right
-			control.left(0.2);
+			control.right(0.6);
 			//s.x -= 0.1;
 
 			console.log('Right');
 		}
 		else{
 			//s.x += 0.1;
-			control.right(0.2);
+			control.left(0.6);
 			console.log('Left')
 		}
 
 
 
-		/*
-
 		if(data.throt > 0){
-			control.backward(0.1);
+			control.backward(0.6);
 		}
 		else if(data.throt < 0){
-			control.forward(0.1);
+			control.forward(0.6);
 		}
-
-
-
-		*/
 
 
 
@@ -57,14 +58,15 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('land', function(){
-
-
+		mission.client().stop();
+		mission.client().land();
 	});
 
 //	socket.emit('takeoff');
 
 });
 
+/*
 setTimeout(function(){
 	control.zero();
 		client.takeoff(function(){
@@ -72,6 +74,7 @@ setTimeout(function(){
 		});
 
 })
+*/
 
 
 process.on('SIGINT', function(){
@@ -84,7 +87,7 @@ process.on('SIGINT', function(){
 		process.exit();
 	}, 6000);
 
-})
+});
 
 
 /*
